@@ -42,7 +42,9 @@ func (s *store) ListCategories(ctx context.Context) (categories []Category, err 
 	err = WithDefaultTimeout(ctx, func(ctx context.Context) error {
 		return s.db.SelectContext(ctx, &categories, listCategoriesQuery)
 	})
-
+	if err == sql.ErrNoRows {
+		return categories, ErrCategoryNotExist
+	}
 	return
 }
 
@@ -50,13 +52,22 @@ func (s *store) FindCategoryByID(ctx context.Context, id string) (category Categ
 	err = WithDefaultTimeout(ctx, func(ctx context.Context) error {
 		return s.db.GetContext(ctx, &category, findCategoryByIDQuery, id)
 	})
-
+	if err == sql.ErrNoRows {
+		return category, ErrCategoryNotExist
+	}
 	return
 }
 
 func (s *store) DeleteCategoryByID(ctx context.Context, id string) (err error) {
 	return Transact(ctx, s.db, &sql.TxOptions{}, func(ctx context.Context) error {
-		_, err := s.db.Exec(deleteCategoryByIDQuery, id)
+		res, err := s.db.Exec(deleteCategoryByIDQuery, id)
+		cnt, err := res.RowsAffected()
+		if cnt == 0 {
+			return ErrCategoryNotExist
+		}
+		if err != nil {
+			return err
+		}
 		return err
 	})
 }
