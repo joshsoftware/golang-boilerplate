@@ -22,6 +22,11 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Accept
+          schema:
+            type: string
+          required: true
         - in: body
           name: body
           description: Category that needs to be added to the database
@@ -43,18 +48,25 @@ paths:
             $ref: "#/definitions/ApiResponse"
     get:
       tags:
-        - category
-      summary: Read all Categories.
-      x-swagger-router-controller: SampleController
+      - category
+      summary: Get a list of all categories
       description: ""
-      operationId: listCategories
       produces:
-        - application/json
+      - application/json
+      parameters:
+        - in: header
+          name: Accept
+          schema:
+            type: string
+          required: true
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/AllCategories"
+            $ref: "#/definitions/Categories"
+            type: array
+            Categories:
+              type: object
         "404":
           description: Not Found
           schema:
@@ -68,122 +80,143 @@ paths:
         - category
       summary: Update an existing category
       description: ""
-      operationId: updateCategory
       consumes:
         - application/json
-        - application/xml
       produces:
-        - application/xml
         - application/json
       parameters:
+        - in: header
+          name: Accept
+          schema:
+            type: string
+          required: true
         - in: body
           name: body
-          description: Pet object that needs to be added to the store
-          required: false
+          required: true
           schema:
-            $ref: "#/definitions/Pet"
+            $ref: "#/definitions/UpdateCategory"
       responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
         "400":
-          description: Invalid ID supplied
-        "404":
-          description: Pet not found
-        "405":
-          description: Validation exception
-      security:
-        - petstore_auth:
-            - "write:pets"
-            - "read:pets"
-  "/categories/{category_id}":
+          description: Bad Request 
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /categories/{category_id}:
     get:
       tags:
         - category
       summary: Find category by ID
       description: Returns a single category
-      operationId: getPetById
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Accept
+          schema:
+            type: string
+          required: true
         - name: category_id
           in: path
-          description: ID of category to return
+          description: this value is get by url
           required: true
           type: string
           format: uuid
       responses:
         "200":
-          description: successful operation
+          description: OK
           schema:
             $ref: "#/definitions/Category"
-        "400":
-          description: Invalid ID supplied
         "404":
-          description: Category not found
-      security:
-        - api_key: []
-        - petstore_auth:
-            - "write:pets"
-            - "read:pets"
+          description: Not Found
+          schema :
+            $ref: "#/definitions/ApiResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ApiResponse"
     delete:
       tags:
         - category
-      summary: Deletes a category
+      summary: Delete a category By Id
       description: ""
-      operationId: deleteCategory
-      produces:
-        - application/json
       parameters:
-        - name: api_key
-          in: header
-          description: ""
-          required: false
-          type: string
-        - name: petId
-          in: path
-          description: Pet id to delete
+        - in: header
+          name: Accept
+          schema:
+            type: string
           required: true
-          type: integer
-          format: int64
+        - name: category_id
+          in: path
+          description: this value is get by url
+          required: true
+          type: string
+          format: uuid
       responses:
-        "400":
-          description: Invalid pet value
-      security:
-        - petstore_auth:
-            - "write:pets"
-            - "read:pets"
-securityDefinitions:
-  petstore_auth:
-    type: oauth2
-    authorizationUrl: "http://petstore.swagger.io/api/oauth/dialog"
-    flow: implicit
-    scopes:
-      "write:pets": modify pets in your account
-      "read:pets": read your pets
-  api_key:
-    type: apiKey
-    name: api_key
-    in: header
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "404":
+          description: Not Found
+          schema :
+            $ref: "#/definitions/ApiResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ApiResponse"
 definitions:
   CreateCategory:
     properties:
       name:
         type: string
-  Category:
+  UpdateCategory:
     properties:
       id:
         type: string
       name:
         type: string
-      created_at: 
+  Category:
+    type: object
+    properties: 
+      id: 
+        type: string
+      name:
+        type: string
+      created_at:
         type: string
       updated_at:
         type: string
-  AllCategories:
+    example:
+      - id: "d11002bf-359c-4b42-a73d-6fcac4584c63"
+        name: "sports"
+        created_at: "2019-02-06T15:13:28.917051+05:30"
+        updated_at: "2019-02-06T15:13:28.917051+05:30"
+  Categories:
+    type: object
     properties:
-      Categories: 
-        type: Category
+      Category:
+        type: array
+        items:
+          $ref: ''
+        example:
+          - id: "d11002bf-359c-4b42-a73d-6fcac4584c63"
+            name: "sports"
+            created_at: "2019-02-06T15:13:28.917051+05:30"
+            updated_at: "2019-02-06T15:13:28.917051+05:30"
+          - id: "149d1920-5ee8-4661-993a-b8501ae31889"
+            name: "Bill"
+            created_at: "2019-02-06T15:43:35.361133+05:30"
+            updated_at: "2019-02-06T15:43:35.361133+05:30"
   ApiResponse:
     properties:
-      Message:
+      message:
         type: string
     xml:
       name: "##default"
