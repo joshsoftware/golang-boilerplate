@@ -1,11 +1,11 @@
 swagger: "2.0"
 info:
-  description: "This is a sample server Petstore server.  You can find out more about Swagger at <a href=\"http://swagger.io\">http://swagger.io</a> or on irc.freenode.net, #swagger.  For this sample, you can use the api key \"special-key\" to test the authorization filters"
+  description: "This is a Category server."
   version: 1.0.0
-  title: Swagger Petstore YAML
+  title: Swagger Category YAML
 tags:
   - name: category
-    description: operations on category
+    description: Operations on Category
 schemes:
   - http
 paths:
@@ -13,10 +13,10 @@ paths:
     post:
       tags:
         - category
-      summary: Add a new category to the store
+      summary: Create a new Category.
       x-swagger-router-controller: SampleController
       description: ""
-      operationId: addCategory
+      operationId: createCategory
       consumes:
         - application/json
       produces:
@@ -24,13 +24,45 @@ paths:
       parameters:
         - in: body
           name: body
-          description: Category object that needs to be added to the store
-          required: false
+          description: Category that needs to be added to the database
+          required: true
           schema:
-            $ref: "#/definitions/Category"
+            $ref: "#/definitions/CreateCategory"
       responses:
-        "405":
-          description: Invalid input
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ApiResponse"
+    get:
+      tags:
+        - category
+      summary: Read all Categories.
+      x-swagger-router-controller: SampleController
+      description: ""
+      operationId: listCategories
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/AllCategories"
+        "404":
+          description: Not Found
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ApiResponse"
     put:
       tags:
         - category
@@ -131,23 +163,27 @@ securityDefinitions:
     name: api_key
     in: header
 definitions:
+  CreateCategory:
+    properties:
+      name:
+        type: string
   Category:
     properties:
       id:
-        type: integer
-        format: int64
+        type: string
       name:
         type: string
-    xml:
-      name: Category
+      created_at: 
+        type: string
+      updated_at:
+        type: string
+  AllCategories:
+    properties:
+      Categories: 
+        type: Category
   ApiResponse:
     properties:
-      code:
-        type: integer
-        format: int32
-      type:
-        type: string
-      message:
+      Message:
         type: string
     xml:
       name: "##default"
