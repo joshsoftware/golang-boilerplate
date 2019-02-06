@@ -14,7 +14,7 @@ var (
 )
 
 func Init() {
-	initLogger()
+	InitLogger()
 
 	err := initDB()
 	if err != nil {
@@ -22,7 +22,7 @@ func Init() {
 	}
 }
 
-func initLogger() {
+func InitLogger() {
 	zapLogger, err := zap.NewProduction()
 	if err != nil {
 		panic(err)
