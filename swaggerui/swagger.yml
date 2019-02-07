@@ -1,11 +1,11 @@
 swagger: "2.0"
 info:
-  description: "This is a Category server."
+  description: ""
   version: 1.0.0
-  title: Swagger Category YAML
+  title: API Docs
 tags:
   - name: category
-    description: Operations on Category
+    description: CRUD
 schemes:
   - http
 paths:
@@ -101,7 +101,7 @@ paths:
           schema:
             $ref: "#/definitions/ApiResponse"
         "400":
-          description: Bad Request 
+          description: Bad Request
           schema:
             $ref: "#/definitions/ApiResponse"
         "500":
@@ -184,8 +184,8 @@ definitions:
         type: string
   Category:
     type: object
-    properties: 
-      id: 
+    properties:
+      id:
         type: string
       name:
         type: string
