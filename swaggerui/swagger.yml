@@ -14,9 +14,7 @@ paths:
       tags:
         - category
       summary: Create a new Category.
-      x-swagger-router-controller: SampleController
       description: ""
-      operationId: createCategory
       consumes:
         - application/json
       produces:
@@ -220,6 +218,3 @@ definitions:
         type: string
     xml:
       name: "##default"
-externalDocs:
-  description: Find out more about Swagger
-  url: "http://swagger.io"
