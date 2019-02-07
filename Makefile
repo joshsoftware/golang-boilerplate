@@ -27,7 +27,7 @@ lint:
 		golint $$p | { grep -vwE "exported (var|function|method|type|const) \S+ should have comment" || true; } \
 	done
 
-build: setup build-deps copy-config compile fmt vet lint db.setup
+build: setup build-deps compile fmt vet lint
 
 setup:
 	go get -u github.com/golang/dep/cmd/dep
