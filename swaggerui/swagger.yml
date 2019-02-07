@@ -21,6 +21,7 @@ paths:
         - application/json
       parameters:
         - in: header
+          description: "api version header eg: application/vnd.boilerplate.v1"
           name: Accept
           schema:
             type: string
@@ -53,6 +54,7 @@ paths:
       - application/json
       parameters:
         - in: header
+          description: "api version header eg: application/vnd.boilerplate.v1"
           name: Accept
           schema:
             type: string
@@ -84,6 +86,7 @@ paths:
         - application/json
       parameters:
         - in: header
+          description: "api version header eg: application/vnd.boilerplate.v1"
           name: Accept
           schema:
             type: string
@@ -116,6 +119,7 @@ paths:
         - application/json
       parameters:
         - in: header
+          description: "api version header eg: application/vnd.boilerplate.v1"
           name: Accept
           schema:
             type: string
@@ -146,6 +150,7 @@ paths:
       description: ""
       parameters:
         - in: header
+          description: "api version header eg: application/vnd.boilerplate.v1"
           name: Accept
           schema:
             type: string
@@ -192,10 +197,10 @@ definitions:
       updated_at:
         type: string
     example:
-      - id: "d11002bf-359c-4b42-a73d-6fcac4584c63"
-        name: "sports"
-        created_at: "2019-02-06T15:13:28.917051+05:30"
-        updated_at: "2019-02-06T15:13:28.917051+05:30"
+      id: "d11002bf-359c-4b42-a73d-6fcac4584c63"
+      name: "sports"
+      created_at: "2019-02-06T15:13:28.917051+05:30"
+      updated_at: "2019-02-06T15:13:28.917051+05:30"
   Categories:
     type: object
     properties:
