@@ -9,7 +9,7 @@ import (
 
 type Service interface {
 	list(ctx context.Context) (response listResponse, err error)
-	create(ctx context.Context, req createRequest) (err error)
+	create(ctx context.Context, req createRequest) (id string, err error)
 	findByID(ctx context.Context, id string) (response findByIDResponse, err error)
 	deleteByID(ctx context.Context, id string) (err error)
 	update(ctx context.Context, req updateRequest) (err error)
@@ -35,16 +35,17 @@ func (cs *categoryService) list(ctx context.Context) (response listResponse, err
 	return
 }
 
-func (cs *categoryService) create(ctx context.Context, c createRequest) (err error) {
+func (cs *categoryService) create(ctx context.Context, c createRequest) (id string, err error) {
 	err = c.Validate()
 	if err != nil {
 		cs.logger.Errorw("Invalid request for category create", "msg", err.Error(), "category", c)
 		return
 	}
 
-	err = cs.store.CreateCategory(ctx, &db.Category{
+	id, err = cs.store.CreateCategory(ctx, &db.Category{
 		Name: c.Name,
 	})
+
 	if err != nil {
 		cs.logger.Error("Error creating category", "err", err.Error())
 		return

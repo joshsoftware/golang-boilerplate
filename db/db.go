@@ -18,7 +18,7 @@ const (
 
 type Storer interface {
 	// Category
-	CreateCategory(ctx context.Context, category *Category) (err error)
+	CreateCategory(ctx context.Context, category *Category) (id string, err error)
 	ListCategories(ctx context.Context) (categories []Category, err error)
 	FindCategoryByID(ctx context.Context, id string) (category Category, err error)
 	DeleteCategoryByID(ctx context.Context, id string) (err error)

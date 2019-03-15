@@ -30,8 +30,9 @@ func TestSuccessfullCreateService(t *testing.T) {
 		{ctx, createRequest{Name: "Reading"}, nil},
 	}
 	for _, test := range tests {
-		sm.On("CreateCategory", test.contx, mock.Anything).Return(nil)
-		assert.Equal(cs.create(test.contx, test.req), test.expected)
+		sm.On("CreateCategory", test.contx, mock.Anything).Return("", nil)
+		_, err := cs.create(test.contx, test.req)
+		assert.Equal(err, test.expected)
 		sm.AssertExpectations(t)
 	}
 }
@@ -54,8 +55,8 @@ func TestCreateServiceWhenEmptyName(t *testing.T) {
 		createRequest{Name: ""},
 		errEmptyName,
 	}
-
-	assert.Equal(cs.create(test.contx, test.req), test.expected)
+	_, err := cs.create(test.contx, test.req)
+	assert.Equal(err, test.expected)
 	sm.AssertExpectations(t)
 }
 
@@ -78,8 +79,9 @@ func TestCreateServiceWhenInternalError(t *testing.T) {
 		errors.New("Internal Error"),
 	}
 
-	sm.On("CreateCategory", test.contx, mock.Anything).Return(errors.New("Internal Error"))
-	assert.Equal(cs.create(test.contx, test.req), test.expected)
+	sm.On("CreateCategory", test.contx, mock.Anything).Return("", errors.New("Internal Error"))
+	_, err := cs.create(test.contx, test.req)
+	assert.Equal(err, test.expected)
 	sm.AssertExpectations(t)
 }
 

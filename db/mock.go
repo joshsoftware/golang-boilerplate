@@ -10,9 +10,9 @@ type StorerMock struct {
 	mock.Mock
 }
 
-func (m *StorerMock) CreateCategory(ctx context.Context, category *Category) (err error) {
+func (m *StorerMock) CreateCategory(ctx context.Context, category *Category) (str string, err error) {
 	args := m.Called(ctx, category)
-	return args.Error(0)
+	return args.String(0), args.Error(1)
 }
 
 func (m *StorerMock) ListCategories(ctx context.Context) (categories []Category, err error) {

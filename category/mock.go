@@ -10,9 +10,9 @@ type CategoryServiceMock struct {
 	mock.Mock
 }
 
-func (m *CategoryServiceMock) create(ctx context.Context, c createRequest) (err error) {
+func (m *CategoryServiceMock) create(ctx context.Context, c createRequest) (str string, err error) {
 	args := m.Called(ctx, c)
-	return args.Error(0)
+	return str, args.Error(0)
 }
 
 func (m *CategoryServiceMock) list(ctx context.Context) (response listResponse, err error) {
