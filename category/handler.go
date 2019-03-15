@@ -28,7 +28,7 @@ func Create(service Service) http.HandlerFunc {
 			return
 		}
 
-		api.Success(rw, http.StatusCreated, api.Response{Message: "Created Successfully with id " + ":" + id})
+		api.Success(rw, http.StatusCreated, api.CreateResponse{Message: "Category created Successfully ", ID: id})
 	})
 }
 

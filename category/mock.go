@@ -12,7 +12,7 @@ type CategoryServiceMock struct {
 
 func (m *CategoryServiceMock) create(ctx context.Context, c createRequest) (str string, err error) {
 	args := m.Called(ctx, c)
-	return str, args.Error(0)
+	return args.String(0), args.Error(1)
 }
 
 func (m *CategoryServiceMock) list(ctx context.Context) (response listResponse, err error) {

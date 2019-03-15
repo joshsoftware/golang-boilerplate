@@ -27,7 +27,7 @@ func makeHTTPCall(handler http.HandlerFunc, method, path, body string) (rr *http
 // Create:
 func TestSuccessfullCreate(t *testing.T) {
 	cs := &CategoryServiceMock{}
-	cs.On("create", mock.Anything, mock.Anything).Return(nil)
+	cs.On("create", mock.Anything, mock.Anything).Return("", nil)
 
 	rr := makeHTTPCall(Create(cs), http.MethodPost, "/categories", `{"name":"Sports"}`)
 
@@ -46,7 +46,7 @@ func TestCreateWhenInvalidRequestBody(t *testing.T) {
 
 func TestCreateWhenEmptyName(t *testing.T) {
 	cs := &CategoryServiceMock{}
-	cs.On("create", mock.Anything, mock.Anything).Return(errEmptyName)
+	cs.On("create", mock.Anything, mock.Anything).Return("", errEmptyName)
 
 	rr := makeHTTPCall(Create(cs), http.MethodPost, "/categories", `{"name":""}`)
 
@@ -56,7 +56,7 @@ func TestCreateWhenEmptyName(t *testing.T) {
 
 func TestCreateWhenInternalError(t *testing.T) {
 	cs := &CategoryServiceMock{}
-	cs.On("create", mock.Anything, mock.Anything).Return(errors.New("Internal Error"))
+	cs.On("create", mock.Anything, mock.Anything).Return("", errors.New("Internal Error"))
 
 	rr := makeHTTPCall(Create(cs), http.MethodPost, "/categories", `{"name":"Sports"}`)
 

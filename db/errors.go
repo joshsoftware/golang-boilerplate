@@ -3,7 +3,7 @@ package db
 import "errors"
 
 const (
-	DuplicateData = "23505"
+	errorCodeForUniqueViolation = "23505"
 )
 
 var (

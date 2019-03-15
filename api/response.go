@@ -11,6 +11,11 @@ type Response struct {
 	Message string `json:"message"`
 }
 
+type CreateResponse struct {
+	Message string `json:"message"`
+	ID      string `json:"id"`
+}
+
 func Error(rw http.ResponseWriter, status int, response interface{}) {
 	respBytes, err := json.Marshal(response)
 	if err != nil {

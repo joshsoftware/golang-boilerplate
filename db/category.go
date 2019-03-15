@@ -14,8 +14,8 @@ const (
 		VALUES($1, $2, $3) 
 		returning id
         `
-	listCategoriesQuery     = `SELECT * FROM categories`
-	findCategoryByIDQuery   = `SELECT * FROM categories WHERE id = $1`
+	listCategoriesQuery     = `SELECT id,name,created_at,updated_at FROM categories`
+	findCategoryByIDQuery   = `SELECT id,name,created_at,updated_at FROM categories WHERE id = $1`
 	deleteCategoryByIDQuery = `DELETE FROM categories WHERE id = $1`
 	updateCategoryQuery     = `UPDATE categories SET name = $1, updated_at = $2 where id = $3`
 )
@@ -39,6 +39,7 @@ func (s *store) FindCategoryByID(ctx context.Context, id string) (category Categ
 	err = WithDefaultTimeout(ctx, func(ctx context.Context) error {
 		return s.db.GetContext(ctx, &category, findCategoryByIDQuery, id)
 	})
+
 	if err == sql.ErrNoRows {
 		return category, ErrCategoryNotExist
 	}
@@ -47,8 +48,8 @@ func (s *store) FindCategoryByID(ctx context.Context, id string) (category Categ
 
 func (s *store) DeleteCategoryByID(ctx context.Context, id string) (err error) {
 	return Transact(ctx, s.db, &sql.TxOptions{}, func(ctx context.Context) error {
-		_, err := s.db.Exec(deleteCategoryByIDQuery, id)
 
+		_, err := s.db.Exec(deleteCategoryByIDQuery, id)
 		return err
 	})
 }
@@ -81,7 +82,7 @@ func (s *store) CreateCategory(ctx context.Context, category *Category) (id stri
 	})
 	if err != nil {
 		dberr, ok := err.(*pq.Error)
-		if ok && dberr.Code == pq.ErrorCode(DuplicateData) {
+		if ok && dberr.Code == pq.ErrorCode(errorCodeForUniqueViolation) {
 			err = errCategoryDuplicateKeyValue
 		}
 	}
