@@ -8,12 +8,12 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/golang-migrate/migrate"
+	"github.com/golang-migrate/migrate/database"
+	"github.com/golang-migrate/migrate/database/postgres"
+	_ "github.com/golang-migrate/migrate/source/file"
 	"github.com/joshsoftware/golang-boilerplate/config"
 	_ "github.com/lib/pq"
-	"github.com/mattes/migrate"
-	"github.com/mattes/migrate/database"
-	"github.com/mattes/migrate/database/postgres"
-	_ "github.com/mattes/migrate/source/file"
 )
 
 var ErrFindingDriver = errors.New("no migrate driver instance found")
