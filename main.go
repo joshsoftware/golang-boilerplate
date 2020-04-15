@@ -1,56 +1,46 @@
 package main
 
-import (
-	"os"
+// @APITitle Main
+// @APIDescription Main API for Microservices in Go!
 
-	"github.com/joshsoftware/golang-boilerplate/app"
-	"github.com/joshsoftware/golang-boilerplate/config"
-	"github.com/joshsoftware/golang-boilerplate/db"
-	"github.com/joshsoftware/golang-boilerplate/server"
-	"github.com/urfave/cli"
+import (
+	"fmt"
+	"strconv"
+
+	"github.com/urfave/negroni"
+
+	logger "github.com/sirupsen/logrus"
+	"joshsoftware/golang-boilerplate/config"
+	"joshsoftware/golang-boilerplate/db"
+	"joshsoftware/golang-boilerplate/service"
 )
 
 func main() {
-	config.Load()
-	app.Init()
-	defer app.Close()
+	logger.SetFormatter(&logger.TextFormatter{
+		FullTimestamp: true,
+	})
 
-	cliApp := cli.NewApp()
-	cliApp.Name = "Golang App"
-	cliApp.Version = "1.0.0"
-	cliApp.Commands = []cli.Command{
-		{
-			Name:  "start",
-			Usage: "start server",
-			Action: func(c *cli.Context) error {
-				server.StartAPIServer()
-				return nil
-			},
-		},
-		{
-			Name:  "create_migration",
-			Usage: "create migration file",
-			Action: func(c *cli.Context) error {
-				return db.CreateMigrationFile(c.Args().Get(0))
-			},
-		},
-		{
-			Name:  "migrate",
-			Usage: "run db migrations",
-			Action: func(c *cli.Context) error {
-				err := db.RunMigrations()
-				return err
-			},
-		},
-		{
-			Name:  "rollback",
-			Usage: "rollback migrations",
-			Action: func(c *cli.Context) error {
-				return db.RollbackMigrations(c.Args().Get(0))
-			},
-		},
+	config.Load()
+
+	store, err := db.Init()
+	if err != nil {
+		logger.Error("Database init failed", err)
+		return
 	}
-	if err := cliApp.Run(os.Args); err != nil {
-		panic(err)
+
+	deps := service.Dependencies{
+		Store: store,
 	}
+
+	// mux router
+	router := service.InitRouter(deps)
+
+	// init web server
+	server := negroni.Classic()
+	server.UseHandler(router)
+
+	port := config.AppPort() // This should be changed to the service port number via argument or environment variable.
+	addr := fmt.Sprintf(":%s", strconv.Itoa(port))
+
+	server.Run(addr)
 }

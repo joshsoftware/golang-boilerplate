@@ -8,49 +8,39 @@ import (
 	"github.com/spf13/viper"
 )
 
-type config struct {
-	appName       string
-	appPort       int
-	migrationPath string
-	db            databaseConfig
-}
-
-var appConfig config
+var (
+	appName string
+	appPort int
+)
 
 func Load() {
-	viper.SetDefault("APP_NAME", "boilerplate")
-	viper.SetDefault("APP_PORT", "8000")
+	viper.SetDefault("APP_NAME", "app")
+	viper.SetDefault("APP_PORT", "8002")
 
 	viper.SetConfigName("application")
-
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("./")
 	viper.AddConfigPath("./..")
 	viper.AddConfigPath("./../..")
 	viper.ReadInConfig()
 	viper.AutomaticEnv()
-
-	appConfig = config{
-		appName:       readEnvString("APP_NAME"),
-		appPort:       readEnvInt("APP_PORT"),
-		migrationPath: readEnvString("MIGRATION_PATH"),
-		db:            newDatabaseConfig(),
-	}
 }
 
 func AppName() string {
-	return appConfig.appName
+	if appName == "" {
+		appName = ReadEnvString("APP_NAME")
+	}
+	return appName
 }
 
 func AppPort() int {
-	return appConfig.appPort
+	if appPort == 0 {
+		appPort = ReadEnvInt("APP_PORT")
+	}
+	return appPort
 }
 
-func MigrationPath() string {
-	return appConfig.migrationPath
-}
-
-func readEnvInt(key string) int {
+func ReadEnvInt(key string) int {
 	checkIfSet(key)
 	v, err := strconv.Atoi(viper.GetString(key))
 	if err != nil {
@@ -59,9 +49,14 @@ func readEnvInt(key string) int {
 	return v
 }
 
-func readEnvString(key string) string {
+func ReadEnvString(key string) string {
 	checkIfSet(key)
 	return viper.GetString(key)
+}
+
+func ReadEnvBool(key string) bool {
+	checkIfSet(key)
+	return viper.GetBool(key)
 }
 
 func checkIfSet(key string) {

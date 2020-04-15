@@ -1,0 +1,112 @@
+consumes:
+- application/io.goswagger.examples.todo-list.v1+json
+info:
+  description: API documentation for SweatBead - Microservics in Go and MongoDB
+  title: SweatBead
+  version: 1.0.0
+produces:
+- application/io.goswagger.examples.todo-list.v1+json
+schemes:
+- http
+swagger: "2.0"
+paths:
+  /user:
+    post:
+      responses:
+        200:
+          description: create user
+          schema:
+            $ref: "#/definitions/user"
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
+  /users:
+    get:
+      responses:
+        200:
+          description: list all users
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/user"
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
+  /user/sweat:
+    get:
+      responses:
+        200:
+          description: list all users sweat
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/sweat"
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
+  /sweat:
+    post:
+      responses:
+        200:
+          description: create sweat
+          schema:
+            $ref: "#/definitions/sweat"
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
+  /sweat_samples:
+    get:
+      responses:
+        200:
+          description: list all sweat samples
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/sweat"
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
+definitions:
+  user:
+    type: object
+    required:
+      - Name
+      - Device
+    properties:
+      Name:
+        type: string
+      Device:
+        type: string
+  sweat:
+    type: object
+    required:
+      - ID
+      - UserID
+    properties:
+      ID:
+        type: string
+      UserID:
+        type: string
+      CreatedAt:
+        type: string
+      Glucose:
+        type: string
+      Chloride:
+        type: string
+      Sodium:
+        type: string
+  error:
+    type: object
+    required:
+      - message
+    properties:
+      code:
+        type: integer
+        format: int64
+      message:
+        type: string

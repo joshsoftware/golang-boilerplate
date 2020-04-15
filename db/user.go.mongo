@@ -1,0 +1,36 @@
+// IMPORTANT: Rename this to user.go
+// We have intentionally kept the same filename, so that you get cleaner code
+package db
+
+import (
+	"context"
+
+	logger "github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson"
+)
+
+type User struct {
+	Name string `bson:"name" json:"full_name"`
+	Age  int    `bson:"age" json:"age"`
+}
+
+func (s *mongoStore) ListUsers(ctx context.Context) (users []User, err error) {
+	collection := s.db.Collection("users")
+	cur, err := collection.Find(ctx, bson.D{})
+	if err != nil {
+		logger.Error("Error in getting collection", err)
+		return
+	}
+	defer cur.Close(ctx)
+
+	var elem User
+	for cur.Next(ctx) {
+		err = cur.Decode(&elem)
+		users = append(users, elem)
+	}
+	if err = cur.Err(); err != nil {
+		logger.Error("Error in listing data: ", err)
+		return
+	}
+	return
+}
