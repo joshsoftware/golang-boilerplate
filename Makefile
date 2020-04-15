@@ -13,5 +13,7 @@ setup-mongo:
 	mv db/mongo.go.tmp db/mongo.go
 	mv db/user.go db/user.go.pg
 	mv db/user.go.mongo db/user.go
+	rm db.mongo.go.tmp
 	@echo
 	@echo "*** Setup DB_URI, DB_NAME in your application.yml ***"
+	@echo

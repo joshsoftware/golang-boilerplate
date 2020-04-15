@@ -1,8 +1,5 @@
 // +build ignore
 
-// IMPORTANT: If you want to use MongoDB, remove the above build tag.
-// Add this build tag to the other database drivers (pg.go).
-// Remember to add a newline after adding the build tag !
 package db
 
 import (

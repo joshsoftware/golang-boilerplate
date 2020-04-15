@@ -1,4 +1,4 @@
-APP_NAME: "sweatmgr"
+APP_NAME: "samplemgr"
 APP_PORT: "33001"
 
 # MongoDB URI

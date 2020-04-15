@@ -1,21 +1,22 @@
 ## Golang Boilerplate
-Golang boilerplate to kickstart any go api project
+Golang boilerplate to kickstart any go api project. This supports 2 database configurations currently:
+
+* MongoDB
+* Postgres (default)
 
 ### Setup
 
-1. Run the below command to copy sample config file (application.yml.sample) to application.yml. Please do not forgot to update the DB env variables in it according to your local setup.
+Run this command to copy sample config file (application.yml.sample) to application.yml. 
+Please do not forgot to update the DB env variables in it according to your local setup.
 ```
 $ make copy-config
 ```
 
-2. Run the below commands to install all dependencies of the project.
-```
-$ make build
-```
+### Setup for MongoDB
 
-3. Run the below command to create db and run migrations on it
+Run this command ONLY ONCE to convert this boilerplate to use MongoDB instead of Postgres.
 ```
-$ make db.setup
+$ make setup-mongo
 ```
 
 ### Testing
@@ -23,8 +24,4 @@ $ make db.setup
 Run test locally
 ```
 $ make test
-```
-Generate coverage report
-```
-$ make test-coverage
 ```
