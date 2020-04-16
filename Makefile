@@ -16,3 +16,7 @@ setup-mongo:
 	@echo
 	@echo "*** Setup DB_URI, DB_NAME in your application.yml ***"
 	@echo
+
+test-coverage:
+	go test ./... -coverprofile=coverage.out
+	go tool cover -html=coverage.out
