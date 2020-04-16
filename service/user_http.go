@@ -2,8 +2,9 @@ package service
 
 import (
 	"encoding/json"
-	logger "github.com/sirupsen/logrus"
 	"net/http"
+
+	logger "github.com/sirupsen/logrus"
 )
 
 // @Title listUsers
@@ -16,17 +17,18 @@ func listUsersHandler(deps Dependencies) http.HandlerFunc {
 	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		users, err := deps.Store.ListUsers(req.Context())
 		if err != nil {
-			logger.Error("Error fetching data", err)
+			logger.WithField("err", err.Error()).Error("Error fetching data")
 			rw.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
 		respBytes, err := json.Marshal(users)
 		if err != nil {
-			logger.Error("Error marshaling data", err)
+			logger.WithField("err", err.Error()).Error("Error marshaling users data")
 			rw.WriteHeader(http.StatusInternalServerError)
 			return
 		}
+
 		rw.Header().Add("Content-Type", "application/json")
 		rw.Write(respBytes)
 	})

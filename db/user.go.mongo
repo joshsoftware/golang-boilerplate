@@ -18,9 +18,10 @@ func (s *mongoStore) ListUsers(ctx context.Context) (users []User, err error) {
 	collection := s.db.Collection("users")
 	cur, err := collection.Find(ctx, bson.D{})
 	if err != nil {
-		logger.Error("Error in getting collection", err)
+		logger.WithField("err", err.Error()).Error("Error in getting data from collection")
 		return
 	}
+
 	defer cur.Close(ctx)
 
 	var elem User
@@ -28,9 +29,11 @@ func (s *mongoStore) ListUsers(ctx context.Context) (users []User, err error) {
 		err = cur.Decode(&elem)
 		users = append(users, elem)
 	}
+
 	if err = cur.Err(); err != nil {
-		logger.Error("Error in listing data: ", err)
+		logger.WithField("err", err.Error()).Error("Error in listing data")
 		return
 	}
+
 	return
 }

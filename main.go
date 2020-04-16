@@ -7,24 +7,26 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/urfave/negroni"
-
-	logger "github.com/sirupsen/logrus"
 	"joshsoftware/golang-boilerplate/config"
 	"joshsoftware/golang-boilerplate/db"
 	"joshsoftware/golang-boilerplate/service"
+
+	"github.com/urfave/negroni"
+
+	logger "github.com/sirupsen/logrus"
 )
 
 func main() {
 	logger.SetFormatter(&logger.TextFormatter{
-		FullTimestamp: true,
+		FullTimestamp:   true,
+		TimestampFormat: "02-01-2006 15:04:05",
 	})
 
 	config.Load()
 
 	store, err := db.Init()
 	if err != nil {
-		logger.Error("Database init failed", err)
+		logger.WithField("err", err.Error()).Error("Database init failed")
 		return
 	}
 
@@ -39,7 +41,7 @@ func main() {
 	server := negroni.Classic()
 	server.UseHandler(router)
 
-	port := config.AppPort() // This should be changed to the service port number via argument or environment variable.
+	port := config.AppPort() // This can be changed to the service port number via environment variable.
 	addr := fmt.Sprintf(":%s", strconv.Itoa(port))
 
 	server.Run(addr)

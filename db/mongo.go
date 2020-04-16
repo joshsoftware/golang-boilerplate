@@ -8,7 +8,6 @@ import (
 	"time"
 
 	logger "github.com/sirupsen/logrus"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -25,7 +24,7 @@ func Init() (s Storer, err error) {
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
-		logger.Error("Cannot initialize database", err)
+		logger.WithField("err", err.Error()).Error("Cannot initialize database")
 		return
 	}
 
@@ -34,40 +33,21 @@ func Init() (s Storer, err error) {
 
 	err = client.Connect(ctx)
 	if err != nil {
-		logger.Error("Cannot initialize database context", err)
+		logger.WithField("err", err.Error()).Error("Cannot initialize database context")
 		return
 	}
 
 	err = client.Ping(ctx, readpref.Primary())
-
 	if err != nil {
-		logger.Error("Cannot connect to database", err)
+		logger.WithField("err", err.Error()).Error("Cannot connect to database")
 		return
 	}
 
-	logger.Info("Connected To MongoDB")
+	logger.WithFields(logger.Fields{
+		"uri":  uri,
+		"name": name,
+	}).Info("Connected to mongo database")
+
 	db := client.Database(name)
-
 	return &mongoStore{db}, nil
-}
-
-// TODO: delete
-func userIDFromContext(ctx context.Context) (userID primitive.ObjectID) {
-	userid := ""
-	if ctx.Value("UserID") != nil { // verify it exists
-		userid = ctx.Value("UserID").(string)
-	}
-
-	if userid == "" {
-		logger.Error("User not specified in context")
-		return
-	}
-
-	userID, err := primitive.ObjectIDFromHex(userid)
-	if err != nil {
-		logger.Errorf("UserID is invalid: %v", err)
-		return
-	}
-
-	return
 }
