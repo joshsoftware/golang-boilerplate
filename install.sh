@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash +x
 
 DB="pg"
 
@@ -63,6 +63,7 @@ sed -i bkp s/joshsoftware\\\/golang-boilerplate/$PACKAGE_S/g */*.go
 
 # Cleanup the bkp files
 find . -name *bkp | xargs -I{} rm {}
+find ./. -name *bkp | xargs -I{} rm {}
 
 if [ "$DB" == "mongo" ]; then
   tail +3 db/mongo.go > db/mongo.go.tmp
