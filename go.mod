@@ -8,6 +8,7 @@ require (
 	github.com/lib/pq v1.3.0
 	github.com/sirupsen/logrus v1.5.0
 	github.com/spf13/viper v1.6.3
+	github.com/stretchr/objx v0.1.1 // indirect
 	github.com/stretchr/testify v1.3.0
 	github.com/urfave/negroni v1.0.0
 	go.mongodb.org/mongo-driver v1.3.2
