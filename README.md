@@ -6,19 +6,22 @@ Golang boilerplate to kickstart any go api project. This supports 2 database con
 
 ### Installing and configuring the boilerplate!
 
-Copy the install.sh script into your microservice develeopment directory.
+Get the install.sh script into your microservice develeopment directory.
 
 ```
-wget https://github.com/joshsoftware/golang-boilerplate/blob/master/install.sh
+wget https://raw.githubusercontent.com/joshsoftware/golang-boilerplate/master/install.sh
 ```
 
 Run the script with the options:
 
 ```
-./install.sh -p package\_name [-d {mongo|pg}] [-h]
+. ./install.sh -p package_name [-d {mongo|pg}] [-h]
 ```
+
 -p: [mandatory] Usually your github handle and service name. Eg. gautamrege/testly or github.com/corp/pkg/service
+
 -d:  [optional] Default: pg. Specify 'mongo' for mongoDB setup
+
 -h:  [optional] Display help
 
 ### Testing
