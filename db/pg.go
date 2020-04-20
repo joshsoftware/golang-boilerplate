@@ -22,14 +22,6 @@ const (
 	migrationPath = "./migrations"
 )
 
-// Create your schema here (sample provided below)
-// If this schema is too big, put it in a schema.go file
-var schema = `
-CREATE TABLE IF NOT EXISTS users (
-	name text,
-	age integer
-);`
-
 var errFindingDriver = errors.New("no migrate driver instance found")
 
 type pgStore struct {
