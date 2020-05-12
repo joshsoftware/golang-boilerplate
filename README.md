@@ -6,7 +6,7 @@ Golang boilerplate to kickstart any go api project. This supports 2 database con
 
 ### Installing and configuring the boilerplate!
 
-Get the install.sh script into your microservice develeopment directory.
+Get the install.sh script into your microservice development directory.
 
 ```
 wget https://raw.githubusercontent.com/joshsoftware/golang-boilerplate/master/install.sh
