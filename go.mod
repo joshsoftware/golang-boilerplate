@@ -12,6 +12,7 @@ require (
 	github.com/spf13/viper v1.6.3
 	github.com/stretchr/testify v1.6.1
 	github.com/urfave/cli v1.22.4
+	github.com/urfave/cli/v2 v2.3.0
 	github.com/urfave/negroni v1.0.0
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
 	github.com/xdg/stringprep v0.0.0-20180714160509-73f8eece6fdc // indirect

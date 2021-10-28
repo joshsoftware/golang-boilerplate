@@ -12,7 +12,7 @@ import (
 	"strconv"
 
 	logger "github.com/sirupsen/logrus"
-	"github.com/urfave/cli"
+	cli "github.com/urfave/cli/v2"
 	"github.com/urfave/negroni"
 )
 
@@ -27,7 +27,7 @@ func main() {
 	cliApp := cli.NewApp()
 	cliApp.Name = config.AppName()
 	cliApp.Version = "1.0.0"
-	cliApp.Commands = []cli.Command{
+	cliApp.Commands = []*cli.Command{
 		{
 			Name:  "start",
 			Usage: "start server",
