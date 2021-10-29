@@ -13,5 +13,6 @@ require (
 	github.com/urfave/cli v1.22.4
 	github.com/urfave/negroni v1.0.0
 	go.mongodb.org/mongo-driver v1.3.2
+	go.uber.org/zap v1.10.0 // indirect
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 )

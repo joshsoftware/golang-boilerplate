@@ -11,6 +11,7 @@ import (
 var (
 	appName string
 	appPort int
+	env     string
 )
 
 func Load() {
@@ -38,6 +39,13 @@ func AppPort() int {
 		appPort = ReadEnvInt("APP_PORT")
 	}
 	return appPort
+}
+
+func Env() string {
+	if env == "" {
+		env = ReadEnvString("ENV")
+	}
+	return env
 }
 
 func ReadEnvInt(key string) int {
