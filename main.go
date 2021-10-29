@@ -4,24 +4,20 @@ package main
 // @APIDescription Main API for Microservices in Go!
 
 import (
+	"context"
 	"fmt"
 	"joshsoftware/golang-boilerplate/config"
 	"joshsoftware/golang-boilerplate/db"
+	"joshsoftware/golang-boilerplate/logger"
 	"joshsoftware/golang-boilerplate/service"
 	"os"
 	"strconv"
 
-	logger "github.com/sirupsen/logrus"
 	cli "github.com/urfave/cli/v2"
 	"github.com/urfave/negroni"
 )
 
 func main() {
-	logger.SetFormatter(&logger.TextFormatter{
-		FullTimestamp:   true,
-		TimestampFormat: "02-01-2006 15:04:05",
-	})
-
 	config.Load()
 
 	cliApp := cli.NewApp()
@@ -64,9 +60,14 @@ func main() {
 }
 
 func startApp() (err error) {
+	_, err = logger.SetupLogger(config.Env())
+	if err != nil {
+		return
+	}
+
 	store, err := db.Init()
 	if err != nil {
-		logger.WithField("err", err.Error()).Error("Database init failed")
+		logger.Errorw(context.Background(), "Database init failed", "err", err.Error())
 		return
 	}
 
