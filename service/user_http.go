@@ -1,7 +1,7 @@
 package service
 
 import (
-	"encoding/json"
+	"joshsoftware/golang-boilerplate/api"
 	"net/http"
 
 	logger "github.com/sirupsen/logrus"
@@ -18,18 +18,10 @@ func listUsersHandler(deps Dependencies) http.HandlerFunc {
 		users, err := deps.Store.ListUsers(req.Context())
 		if err != nil {
 			logger.WithField("err", err.Error()).Error("Error fetching data")
-			rw.WriteHeader(http.StatusInternalServerError)
+			api.Error(http.StatusInternalServerError, api.Response{Message: "Error fetching data"}, rw)
 			return
 		}
 
-		respBytes, err := json.Marshal(users)
-		if err != nil {
-			logger.WithField("err", err.Error()).Error("Error marshaling users data")
-			rw.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-
-		rw.Header().Add("Content-Type", "application/json")
-		rw.Write(respBytes)
+		api.Success(http.StatusOK, users, rw)
 	})
 }

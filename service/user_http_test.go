@@ -1,7 +1,9 @@
 package service
 
 import (
+	"encoding/json"
 	"errors"
+	"joshsoftware/golang-boilerplate/api"
 	"joshsoftware/golang-boilerplate/db"
 	"net/http"
 	"net/http/httptest"
@@ -63,7 +65,12 @@ func (suite *UsersHandlerTestSuite) TestListUsersWhenDBFailure() {
 		listUsersHandler(Dependencies{Store: suite.dbMock}),
 	)
 
+	response := api.Response{Message: "Error fetching data"}
+	responseBytes, err := json.Marshal(response)
+	assert.NoError(suite.T(), err)
+
 	assert.Equal(suite.T(), http.StatusInternalServerError, recorder.Code)
+	assert.Equal(suite.T(), string(responseBytes), recorder.Body.String())
 	suite.dbMock.AssertExpectations(suite.T())
 }
 
