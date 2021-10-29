@@ -33,7 +33,7 @@ func TestExampleTestSuite(t *testing.T) {
 func (suite *UsersHandlerTestSuite) TestListUsersSuccess() {
 	suite.dbMock.On("ListUsers", mock.Anything).Return(
 		[]db.User{
-			db.User{Name: "test-user", Age: 18},
+			{Name: "test-user", Age: 18},
 		},
 		nil,
 	)
