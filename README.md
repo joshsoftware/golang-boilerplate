@@ -30,3 +30,7 @@ Run test locally
 ```
 $ make test
 ```
+Generate coverage report
+```
+$ make test-coverage
+```
