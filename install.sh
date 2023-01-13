@@ -58,12 +58,10 @@ git clone git@github.com:joshsoftware/golang-boilerplate.git
 rm -rf golang-boilerplate/.git
 cp -r golang-boilerplate/* .
 rm -rf golang-boilerplate
-sed -i bkp s/joshsoftware\\\/golang-boilerplate/$PACKAGE_S/g *.go
-sed -i bkp s/joshsoftware\\\/golang-boilerplate/$PACKAGE_S/g */*.go
+find . -type f -name '*.go' -exec sed -i.bkp 's/joshsoftware\/golang-boilerplate/'"$PACKAGE_S"'/g' {} +
 
 # Cleanup the bkp files
-find . -name *bkp | xargs -I{} rm {}
-find ./. -name *bkp | xargs -I{} rm {}
+find . -type f -name '*.bkp' -exec rm -f {} +
 
 if [ "$DB" == "mongo" ]; then
   tail +3 db/mongo.go > db/mongo.go.tmp
